@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import axios from "axios";
+import API from "../../api/axios";
 import { FaSearch, FaUserShield, FaUser, FaSort, FaCheck, FaTimes } from "react-icons/fa";
 import { toast } from "react-toastify";
 
@@ -15,10 +15,8 @@ export default function AdminUsers() {
 
     const fetchUsers = async () => {
         try {
-            const token = localStorage.getItem("token");
-            const { data } = await axios.get("http://127.0.0.1:8000/api/admin/users/", {
-                headers: { Authorization: `Bearer ${token}` }
-            });
+            // Using centralized API instance (auto adds token)
+            const { data } = await API.get("/api/admin/users/");
             setUsers(data);
             setLoading(false);
         } catch (err) {
@@ -41,10 +39,7 @@ export default function AdminUsers() {
         setUsers(users.map(u => u.id === user.id ? { ...u, is_staff: newStatus } : u));
 
         try {
-            const token = localStorage.getItem("token");
-            await axios.put(`http://127.0.0.1:8000/api/admin/users/${user.id}/status/`, {}, {
-                headers: { Authorization: `Bearer ${token}` }
-            });
+            await API.put(`/api/admin/users/${user.id}/status/`, {});
             toast.success(`User ${user.username} is now ${newStatus ? "an Admin" : "a User"}`);
         } catch (err) {
             console.error(err);
