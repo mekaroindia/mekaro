@@ -26,9 +26,14 @@ load_dotenv()
 SECRET_KEY = 'django-insecure-z+ux&hnguc+84!jxiya(d%7io=x0_2x!r9&4n^p_-lef4f*jq+'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+# SECURITY WARNING: don't run with debug turned on in production!
+DEBUG = 'RENDER' not in os.environ
 
-ALLOWED_HOSTS = ["*"]
+ALLOWED_HOSTS = ['*']
+
+RENDER_EXTERNAL_HOSTNAME = os.environ.get('RENDER_EXTERNAL_HOSTNAME')
+if RENDER_EXTERNAL_HOSTNAME:
+    ALLOWED_HOSTS.append(RENDER_EXTERNAL_HOSTNAME)
 
 CSRF_TRUSTED_ORIGINS = ["https://*.onrender.com"]
 
@@ -38,9 +43,9 @@ EMAIL_PORT = 587
 EMAIL_USE_TLS = True
 
 
-EMAIL_HOST_USER='mekaro.india@gmail.com'
-EMAIL_HOST_PASSWORD='ydkolnzgymyszdbl'
-DEFAULT_FROM_EMAIL = 'mekaro.india@gmail.com'
+EMAIL_HOST_USER = os.getenv('EMAIL_HOST_USER', 'mekaro.india@gmail.com')
+EMAIL_HOST_PASSWORD = os.getenv('EMAIL_HOST_PASSWORD', 'ydkolnzgymyszdbl')
+DEFAULT_FROM_EMAIL = os.getenv('EMAIL_HOST_USER', 'mekaro.india@gmail.com')
 
 # Application definition
 
@@ -59,6 +64,8 @@ INSTALLED_APPS = [
     'projects',
     'enquiries',
     'workshops',
+    'cloudinary_storage',
+    'cloudinary',
 ]
 
 MIDDLEWARE = [
@@ -78,6 +85,14 @@ MIDDLEWARE = [
 
 CORS_ALLOW_ALL_ORIGINS = True
 CORS_ALLOW_CREDENTIALS = True
+
+# Cloudinary Storage
+CLOUDINARY_STORAGE = {
+    'CLOUD_NAME': os.getenv('CLOUDINARY_CLOUD_NAME'),
+    'API_KEY': os.getenv('CLOUDINARY_API_KEY'),
+    'API_SECRET': os.getenv('CLOUDINARY_API_SECRET'),
+}
+DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
 
 ROOT_URLCONF = 'backend.urls'
 
