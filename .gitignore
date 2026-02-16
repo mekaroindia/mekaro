@@ -1,0 +1,21 @@
+# System
+.DS_Store
+Thumbs.db
+
+# Environments
+venv/
+env/
+.env
+
+# Python
+__pycache__/
+*.py[cod]
+db.sqlite3
+
+# Node
+node_modules/
+build/
+dist/
+
+# Logs
+*.log
