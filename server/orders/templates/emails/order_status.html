@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8" />
+    <title>Order Update</title>
+    <style>
+        /* Reset & Basics */
+        body {
+            margin: 0;
+            padding: 0;
+            background-color: #0f172a;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            color: #e2e8f0;
+        }
+
+        table {
+            border-collapse: collapse;
+        }
+
+        a {
+            text-decoration: none;
+        }
+
+        .status-dot {
+            height: 12px;
+            width: 12px;
+            background-color: #334155;
+            border-radius: 50%;
+            display: inline-block;
+        }
+
+        .status-dot.active {
+            background-color: #06b6d4;
+            box-shadow: 0 0 10px #06b6d4, 0 0 20px #06b6d4;
+        }
+
+        .status-line {
+            height: 4px;
+            background-color: #334155;
+            flex-grow: 1;
+            margin: 0 5px;
+            border-radius: 2px;
+        }
+
+        .status-line.filled {
+            background: linear-gradient(90deg, #06b6d4, #8b5cf6);
+        }
+    </style>
+</head>
+
+<body style="background-color: #0f172a; margin: 0; padding: 0;">
+
+    <center>
+        <table width="100%" border="0" cellpadding="0" cellspacing="0" style="background-color: #0f172a; width: 100%;">
+            <tr>
+                <td align="center" valign="top">
+
+                    <!-- Outer Container -->
+                    <table width="600" border="0" cellpadding="0" cellspacing="0"
+                        style="width: 100%; max-width: 600px; background-color: #1e293b; border-radius: 16px; overflow: hidden; margin-top: 40px; margin-bottom: 40px; box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5); border: 1px solid rgba(255, 255, 255, 0.1);">
+
+                        <!-- Hero Header -->
+                        <tr>
+                            <td align="center"
+                                style="padding: 40px 20px; background: linear-gradient(135deg, #0f172a 0%, #1e1b4b 100%); border-bottom: 1px solid rgba(255,255,255,0.05);">
+                                <!-- Logo / Icon -->
+                                <div
+                                    style="width: 60px; height: 60px; background: rgba(6, 182, 212, 0.1); border-radius: 12px; display: inline-block; line-height: 60px; font-size: 30px; margin-bottom: 15px; border: 1px solid rgba(6, 182, 212, 0.3); box-shadow: 0 0 20px rgba(6, 182, 212, 0.2);">
+                                    📦
+                                </div>
+                                <h1
+                                    style="color: #ffffff; margin: 0; font-size: 28px; font-weight: 800; opacity: 0; animation: fadeIn 1s forwards;">
+                                    MEKARO</h1>
+                                <p
+                                    style="color: #94a3b8; font-size: 14px; margin-top: 5px; letter-spacing: 2px; text-transform: uppercase;">
+                                    Order Update</p>
+                            </td>
+                        </tr>
+
+                        <!-- Status Banner -->
+                        <tr>
+                            <td align="center" style="padding: 0;">
+                                <div style="background: linear-gradient(90deg, #06b6d4, #8b5cf6); padding: 2px;">
+                                    <!-- Gradient Border Line -->
+                                </div>
+                            </td>
+                        </tr>
+
+                        <!-- Content Body -->
+                        <tr>
+                            <td style="padding: 40px 30px;">
+                                <p style="color: #e2e8f0; font-size: 18px; line-height: 1.6; margin: 0 0 20px;">
+                                    Hello <strong style="color: #06b6d4;">{{ name }}</strong>,
+                                </p>
+                                <p style="color: #cbd5e1; font-size: 16px; line-height: 1.6; margin: 0 0 30px;">
+                                    Good news! Your order <strong>#{{ order_id }}</strong> has moved to the next stage.
+                                </p>
+
+                                <!-- Status Pill -->
+                                <table width="100%" border="0" cellspacing="0" cellpadding="0"
+                                    style="margin-bottom: 30px;">
+                                    <tr>
+                                        <td align="center">
+                                            <div
+                                                style="display: inline-block; padding: 12px 30px; background: rgba(6, 182, 212, 0.1); border: 1px solid #06b6d4; border-radius: 50px; color: #22d3ee; font-weight: bold; font-size: 18px; text-transform: uppercase; letter-spacing: 1px; box-shadow: 0 0 15px rgba(6, 182, 212, 0.3);">
+                                                {{ status }}
+                                            </div>
+                                        </td>
+                                    </tr>
+                                </table>
+
+                                <!-- Tracking Message -->
+                                {% if status == 'shipped' %}
+                                <div
+                                    style="background: rgba(139, 92, 246, 0.1); border-left: 4px solid #8b5cf6; padding: 15px; border-radius: 4px; margin-bottom: 30px;">
+                                    <p style="margin: 0; color: #ddd6fe; font-size: 14px;">
+                                        🚀 <strong>It's on the way!</strong> Your package has left our facility and is
+                                        zooming towards you.
+                                    </p>
+                                </div>
+                                {% elif status == 'delivered' %}
+                                <div
+                                    style="background: rgba(16, 185, 129, 0.1); border-left: 4px solid #10b981; padding: 15px; border-radius: 4px; margin-bottom: 30px;">
+                                    <p style="margin: 0; color: #d1fae5; font-size: 14px;">
+                                        🎉 <strong>Arrived!</strong> Your package has been delivered. Enjoy your tech!
+                                    </p>
+                                </div>
+                                {% endif %}
+
+                                <!-- Visual Timeline -->
+                                <table width="100%" cellpadding="0" cellspacing="0" style="margin-top: 20px;">
+                                    <tr>
+                                        <!-- Pending -->
+                                        <td align="center" width="25%" style="font-size: 10px; color: #06b6d4;">
+                                            {% if status == 'pending' %}
+                                            <div
+                                                style="width: 10px; height: 10px; background: #06b6d4; border-radius: 50%; margin-bottom: 5px; box-shadow: 0 0 10px #06b6d4;">
+                                            </div>
+                                            {% else %}
+                                            <div
+                                                style="width: 10px; height: 10px; background: #06b6d4; border-radius: 50%; margin-bottom: 5px;">
+                                            </div>
+                                            {% endif %}
+                                            Pending
+                                        </td>
+
+                                        <!-- Line 1 -->
+                                        {% if status == 'paid' or status == 'shipped' or status == 'delivered' %}
+                                        <td width="5%" style="height: 6px; border-bottom: 2px solid #06b6d4;"></td>
+                                        {% else %}
+                                        <td width="5%" style="height: 6px; border-bottom: 2px solid #334155;"></td>
+                                        {% endif %}
+
+                                        <!-- Paid -->
+                                        <!-- Color Logic -->
+                                        {% if status == 'paid' or status == 'shipped' or status == 'delivered' %}
+                                        <td align="center" width="25%" style="font-size: 10px; color: #06b6d4;">
+                                            {% if status == 'paid' %}
+                                            <div
+                                                style="width: 10px; height: 10px; background: #06b6d4; border-radius: 50%; margin-bottom: 5px; box-shadow: 0 0 10px #06b6d4;">
+                                            </div>
+                                            {% else %}
+                                            <div
+                                                style="width: 10px; height: 10px; background: #06b6d4; border-radius: 50%; margin-bottom: 5px;">
+                                            </div>
+                                            {% endif %}
+                                            Paid
+                                        </td>
+                                        {% else %}
+                                        <td align="center" width="25%" style="font-size: 10px; color: #64748b;">
+                                            <div
+                                                style="width: 10px; height: 10px; background: #334155; border-radius: 50%; margin-bottom: 5px;">
+                                            </div>
+                                            Paid
+                                        </td>
+                                        {% endif %}
+
+                                        <!-- Line 2 -->
+                                        {% if status == 'shipped' or status == 'delivered' %}
+                                        <td width="5%" style="height: 6px; border-bottom: 2px solid #06b6d4;"></td>
+                                        {% else %}
+                                        <td width="5%" style="height: 6px; border-bottom: 2px solid #334155;"></td>
+                                        {% endif %}
+
+                                        <!-- Shipped -->
+                                        {% if status == 'shipped' or status == 'delivered' %}
+                                        <td align="center" width="25%" style="font-size: 10px; color: #06b6d4;">
+                                            {% if status == 'shipped' %}
+                                            <div
+                                                style="width: 10px; height: 10px; background: #06b6d4; border-radius: 50%; margin-bottom: 5px; box-shadow: 0 0 10px #06b6d4;">
+                                            </div>
+                                            {% else %}
+                                            <div
+                                                style="width: 10px; height: 10px; background: #06b6d4; border-radius: 50%; margin-bottom: 5px;">
+                                            </div>
+                                            {% endif %}
+                                            Shipped
+                                        </td>
+                                        {% else %}
+                                        <td align="center" width="25%" style="font-size: 10px; color: #64748b;">
+                                            <div
+                                                style="width: 10px; height: 10px; background: #334155; border-radius: 50%; margin-bottom: 5px;">
+                                            </div>
+                                            Shipped
+                                        </td>
+                                        {% endif %}
+
+                                        <!-- Line 3 -->
+                                        {% if status == 'delivered' %}
+                                        <td width="5%" style="height: 6px; border-bottom: 2px solid #06b6d4;"></td>
+                                        {% else %}
+                                        <td width="5%" style="height: 6px; border-bottom: 2px solid #334155;"></td>
+                                        {% endif %}
+
+                                        <!-- Delivered -->
+                                        {% if status == 'delivered' %}
+                                        <td align="center" width="25%" style="font-size: 10px; color: #06b6d4;">
+                                            <div
+                                                style="width: 10px; height: 10px; background: #06b6d4; border-radius: 50%; margin-bottom: 5px; box-shadow: 0 0 10px #06b6d4;">
+                                            </div>
+                                            Delivered
+                                        </td>
+                                        {% else %}
+                                        <td align="center" width="25%" style="font-size: 10px; color: #64748b;">
+                                            <div
+                                                style="width: 10px; height: 10px; background: #334155; border-radius: 50%; margin-bottom: 5px;">
+                                            </div>
+                                            Delivered
+                                        </td>
+                                        {% endif %}
+                                    </tr>
+                                </table>
+
+                                <!-- Action Button -->
+                                <table width="100%" border="0" cellspacing="0" cellpadding="0"
+                                    style="margin-top: 40px;">
+                                    <tr>
+                                        <td align="center">
+                                            <a href="http://localhost:3000/my_orders"
+                                                style="display: inline-block; padding: 16px 36px; background: linear-gradient(90deg, #06b6d4, #3b82f6); color: #ffffff; text-transform: uppercase; font-weight: bold; border-radius: 8px; font-size: 14px; box-shadow: 0 4px 15px rgba(6, 182, 212, 0.4);">
+                                                Track Order
+                                            </a>
+                                        </td>
+                                    </tr>
+                                </table>
+
+                            </td>
+                        </tr>
+
+                        <!-- Footer -->
+                        <tr>
+                            <td
+                                style="padding: 30px; background-color: #0f172a; border-top: 1px solid rgba(255,255,255,0.05); text-align: center;">
+                                <p style="color: #64748b; font-size: 12px; margin: 0;">
+                                    © {{ year }} MEKARO. Designing the Future.
+                                </p>
+                                <div style="margin-top: 10px;">
+                                    <a href="#" style="color: #475569; padding: 0 10px; font-size: 12px;">Support</a>
+                                    <a href="#" style="color: #475569; padding: 0 10px; font-size: 12px;">Privacy</a>
+                                    <a href="#" style="color: #475569; padding: 0 10px; font-size: 12px;">Terms</a>
+                                </div>
+                            </td>
+                        </tr>
+
+                    </table>
+                    <!-- End Outer Container -->
+
+                </td>
+            </tr>
+        </table>
+    </center>
+
+</body>
+
+</html>
