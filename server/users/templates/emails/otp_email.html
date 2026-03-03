@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            color: #333;
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f9f9f9;
+            border-radius: 8px;
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .logo {
+            font-size: 24px;
+            font-weight: bold;
+            color: #06b6d4;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+
+        .content {
+            background: white;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+        }
+
+        .otp-box {
+            text-align: center;
+            margin: 30px 0;
+        }
+
+        .otp-code {
+            font-size: 36px;
+            font-weight: bold;
+            letter-spacing: 5px;
+            color: #111;
+            background: #f0fdfa;
+            padding: 15px 30px;
+            border-radius: 8px;
+            border: 1px dashed #06b6d4;
+            display: inline-block;
+        }
+
+        .warning {
+            color: #dc2626;
+            font-size: 14px;
+            margin-top: 20px;
+            text-align: center;
+        }
+
+        .footer {
+            text-align: center;
+            margin-top: 30px;
+            font-size: 12px;
+            color: #666;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <div class="header">
+            <div class="logo">MEKARO</div>
+        </div>
+        <div class="content">
+            <h2>Welcome to MEKARO!</h2>
+            <p>Hi {{ first_name }},</p>
+            <p>Thank you for registering with us. To complete your account creation, please use the following One-Time
+                Password (OTP) to verify your email address:</p>
+
+            <div class="otp-box">
+                <span class="otp-code">{{ otp_code }}</span>
+            </div>
+
+            <p style="text-align: center;"><strong>This code is valid for 10 minutes.</strong></p>
+
+            <p class="warning">Please do not share this code with anyone. Our team will never ask for your password or
+                OTP.</p>
+        </div>
+        <div class="footer">
+            <p>&copy; {{ year }} MEKARO Store. All rights reserved.</p>
+        </div>
+    </div>
+</body>
+
+</html>
