@@ -35,9 +35,15 @@ RENDER_EXTERNAL_HOSTNAME = os.environ.get('RENDER_EXTERNAL_HOSTNAME')
 if RENDER_EXTERNAL_HOSTNAME:
     ALLOWED_HOSTS.append(RENDER_EXTERNAL_HOSTNAME)
 
-CSRF_TRUSTED_ORIGINS = ["https://*.onrender.com"]
+CSRF_TRUSTED_ORIGINS = [
+    "https://*.onrender.com",
+    "https://*.vercel.app",
+    "https://mekaro.in",
+    "https://www.mekaro.in"
+]
 
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+# Use Google's explicit IPv4 address to fix Render Free Tier IPv6 Network Unreachable error
 EMAIL_HOST = '142.251.10.108'
 EMAIL_PORT = 587
 EMAIL_USE_TLS = True
@@ -193,5 +199,4 @@ SIMPLE_JWT = {
 # Razorpay Settings
 RAZORPAY_KEY_ID = os.getenv('RAZORPAY_KEY_ID', 'rzp_test_SE556F7QvgEmZ4')
 RAZORPAY_KEY_SECRET = os.getenv('RAZORPAY_KEY_SECRET', 'xLsjI5BcYVPiYUWQAKuobFdz')
-
 
