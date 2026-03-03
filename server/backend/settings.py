@@ -38,7 +38,7 @@ if RENDER_EXTERNAL_HOSTNAME:
 CSRF_TRUSTED_ORIGINS = ["https://*.onrender.com"]
 
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
-EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_HOST = '142.251.10.108'
 EMAIL_PORT = 587
 EMAIL_USE_TLS = True
 
@@ -193,4 +193,5 @@ SIMPLE_JWT = {
 # Razorpay Settings
 RAZORPAY_KEY_ID = os.getenv('RAZORPAY_KEY_ID', 'rzp_test_SE556F7QvgEmZ4')
 RAZORPAY_KEY_SECRET = os.getenv('RAZORPAY_KEY_SECRET', 'xLsjI5BcYVPiYUWQAKuobFdz')
+
 
