@@ -14,3 +14,4 @@ djangorestframework-simplejwt
 google-auth
 cloudinary
 django-cloudinary-storage
+resend
