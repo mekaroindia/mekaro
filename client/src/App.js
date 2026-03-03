@@ -62,6 +62,7 @@ function App() {
 
   return (
     <GoogleOAuthProvider clientId="733597529233-msuclt8qeide7tgimobj99p0tp397uqd.apps.googleusercontent.com">
+                    
       <>
         {showSplash ? (
           <Splash onFinish={handleSplashFinish} duration={5000} />
