@@ -1,26 +1,11 @@
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework.response import Response
 from rest_framework.permissions import IsAdminUser, AllowAny
-from django.core.mail import send_mail
+from django.core.mail import EmailMultiAlternatives
 from django.conf import settings
+from backend.utils import send_email_async
 from .models import ProjectRequest
 from .serializers import ProjectRequestSerializer
-
-import threading
-
-def send_async_email(subject, message, from_email, recipient_list):
-    print(f"DEBUG: Starting async email to {recipient_list}")
-    try:
-        send_mail(
-            subject,
-            message,
-            from_email,
-            recipient_list,
-            fail_silently=False,
-        )
-        print("DEBUG: Email sent successfully")
-    except Exception as e:
-        print(f"DEBUG: Email sending failed: {e}")
 
 @api_view(['POST'])
 @permission_classes([AllowAny])
@@ -36,7 +21,7 @@ def create_project_request(request):
             project_request = serializer.save()
             print(f"DEBUG: Saved Project Request ID: {project_request.id}")
 
-            # Send Email to Admin (Async)
+            # Send Email to Admin (Async via Resend API)
             subject = f"New Project Request: {project_request.project_title}"
             message = f"""
             New Project Request Received!
@@ -52,12 +37,14 @@ def create_project_request(request):
             Log in to the admin dashboard to view details.
             """
             
-            # Start background thread for email
-            email_thread = threading.Thread(
-                target=send_async_email,
-                args=(subject, message, settings.DEFAULT_FROM_EMAIL, [settings.EMAIL_HOST_USER])
+            email = EmailMultiAlternatives(
+                subject=subject,
+                body=message,
+                from_email=settings.DEFAULT_FROM_EMAIL,
+                to=["mekaro.india@gmail.com"] # Admins receive this
             )
-            email_thread.start()
+            
+            send_email_async(email)
             
             return Response(serializer.data, status=201)
         except Exception as e:
