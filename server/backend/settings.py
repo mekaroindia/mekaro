@@ -11,7 +11,17 @@ https://docs.djangoproject.com/en/5.2/ref/settings/
 """
 import dj_database_url
 import os
+import socket
 from dotenv import load_dotenv
+
+# --- RENDER FREE TIER IPV6 BYPASS ---
+# Force all Python networking to use IPv4 instead of IPv6. 
+# This prevents "Network is unreachable" and "Connection timed out" errors when connecting to smtp.gmail.com
+orig_getaddrinfo = socket.getaddrinfo
+def getaddrinfo_ipv4(host, port, family=0, type=0, proto=0, flags=0):
+    return orig_getaddrinfo(host, port, socket.AF_INET, type, proto, flags)
+socket.getaddrinfo = getaddrinfo_ipv4
+# ------------------------------------
 
 from pathlib import Path
 
@@ -43,8 +53,7 @@ CSRF_TRUSTED_ORIGINS = [
 ]
 
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
-# Use Google's explicit IPv4 address to fix Render Free Tier IPv6 Network Unreachable error
-EMAIL_HOST = '142.251.10.108'
+EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_PORT = 587
 EMAIL_USE_TLS = True
 
