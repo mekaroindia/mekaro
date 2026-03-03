@@ -1,7 +1,8 @@
 from rest_framework import viewsets, status
 from rest_framework.response import Response
-from django.core.mail import send_mail
 from django.conf import settings
+from django.core.mail import EmailMultiAlternatives
+from backend.utils import send_email_async
 from .models import WorkshopEnquiry
 from .serializers import WorkshopEnquirySerializer
 from rest_framework.permissions import AllowAny, IsAdminUser
@@ -35,13 +36,13 @@ class WorkshopEnquiryViewSet(viewsets.ModelViewSet):
             {serializer.validated_data.get('message')}
             """
             
-            send_mail(
-                subject,
-                message,
-                settings.DEFAULT_FROM_EMAIL,
-                ['mekaro.india@gmail.com'],
-                fail_silently=False,
+            email = EmailMultiAlternatives(
+                subject=subject,
+                body=message,
+                from_email="MEKARO India <mekaro.india@gmail.com>",
+                to=['mekaro.india@gmail.com']
             )
+            send_email_async(email)
         except Exception as e:
             print(f"Failed to send email: {e}")
 
