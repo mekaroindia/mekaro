@@ -32,6 +32,7 @@ import AdminUsers from "./pages/admin/AdminUsers";
 import AdminOrders from "./pages/admin/AdminOrders";
 import AdminProducts from "./pages/admin/AdminProducts";
 import AdminCategories from "./pages/admin/AdminCategories";
+import AdminVideos from "./pages/admin/AdminVideos";
 import AdminProjects from "./pages/admin/AdminProjects"; // Added
 import AdminWorkshopEnquiries from "./pages/admin/AdminWorkshopEnquiries"; // Added
 import AdminWorkshops from "./pages/admin/AdminWorkshops"; // Added
@@ -78,6 +79,7 @@ function App() {
                 <Route path="users" element={<AdminUsers />} />
                 <Route path="products" element={<AdminProducts />} />
                 <Route path="categories" element={<AdminCategories />} />
+                <Route path="videos" element={<AdminVideos />} />
                 <Route path="projects" element={<AdminProjects />} />
                 <Route path="enquiries" element={<AdminWorkshopEnquiries />} />
                 <Route path="workshops" element={<AdminWorkshops />} />
