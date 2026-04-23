@@ -11,7 +11,7 @@ import {
   FaShoppingCart, FaStar, FaMicrochip, FaPlane, FaBatteryFull, FaCube,
   FaWifi, FaMemory, FaCogs, FaDigitalTachograph, FaNetworkWired,
   FaTools, FaRobot, FaChargingStation, FaChevronLeft, FaChevronRight,
-  FaSortAmountDown, FaChevronDown, FaLayerGroup
+  FaSortAmountDown, FaChevronDown, FaLayerGroup, FaYoutube, FaPlayCircle
 } from "react-icons/fa";
 import { calculateFakeOriginalPrice } from "../utils/priceHelper";
 
@@ -19,6 +19,7 @@ export default function Home() {
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [fetchError, setFetchError] = useState(null);
+  const [videos, setVideos] = useState([]);
   const [added, setAdded] = useState({});
   const { addToCart } = useContext(CartContext);
 
@@ -68,6 +69,13 @@ export default function Home() {
         setCategories(res.data);
       })
       .catch((err) => console.error("Category fetch error:", err));
+
+    API.get("/api/videos/")
+      .then((res) => {
+        const fetchedVideos = res.data.results ? res.data.results : res.data;
+        setVideos(fetchedVideos.slice(0, 6));
+      })
+      .catch((err) => console.error("Videos fetch error:", err));
   }, []);
 
   const location = useLocation();
@@ -600,6 +608,52 @@ export default function Home() {
         )}
       </Container >
 
+      {/* YOUTUBE VIDEOS SECTION */}
+      {videos.length > 0 && (
+        <div style={{ background: "var(--bg-darker)", padding: "40px 0", borderTop: "1px solid var(--glass-border)" }}>
+          <Container>
+            <h2 style={{
+              fontSize: "24px",
+              fontWeight: "800",
+              marginBottom: "24px",
+              color: "var(--text-main)",
+              display: "flex",
+              alignItems: "center",
+              gap: "12px"
+            }}>
+              <FaYoutube color="#ff0000" size={28} />
+              Mekaro on YouTube
+            </h2>
+            
+            <div className="videos-scroll-container">
+              {videos.map((video) => (
+                <div key={video.id} className="video-card" onClick={() => window.open(video.youtube_url, "_blank")}>
+                  <div className="video-thumbnail-wrap">
+                    <img 
+                      src={video.thumbnail_url || "https://via.placeholder.com/640x360?text=Video"} 
+                      alt={video.title || "YouTube Video"} 
+                    />
+                    <div className="play-overlay">
+                      <FaPlayCircle size={48} color="white" />
+                    </div>
+                  </div>
+                  <div className="video-info">
+                    <h3 className="video-title">{video.title || "Watch Video"}</h3>
+                  </div>
+                </div>
+              ))}
+              
+              <div className="video-card view-more-card" onClick={() => window.open("https://www.youtube.com/@mekaroindia", "_blank")}>
+                <div className="view-more-content">
+                  <FaYoutube size={48} color="#ff0000" />
+                  <span>View More on YouTube</span>
+                </div>
+              </div>
+            </div>
+          </Container>
+        </div>
+      )}
+
       <Footer hideOnMobile={true} />
 
       <style>{`
@@ -798,6 +852,134 @@ export default function Home() {
           margin-bottom: 20px;
         }
         .category-card {
+          min-width: 110px;
+          padding: 16px 12px;
+          background: rgba(255, 255, 255, 0.03);
+          border: 1px solid var(--glass-border);
+          border-radius: 16px;
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          justify-content: center;
+          gap: 12px;
+          cursor: pointer;
+          transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+          user-select: none;
+          text-align: center;
+        }
+
+        /* YOUTUBE VIDEOS STYLES */
+        .videos-scroll-container {
+          display: flex;
+          gap: 20px;
+          overflow-x: auto;
+          padding-bottom: 20px;
+          scrollbar-width: thin;
+          scrollbar-color: var(--primary) transparent;
+        }
+        .videos-scroll-container::-webkit-scrollbar {
+          height: 8px;
+        }
+        .videos-scroll-container::-webkit-scrollbar-track {
+          background: rgba(255, 255, 255, 0.05);
+          border-radius: 10px;
+        }
+        .videos-scroll-container::-webkit-scrollbar-thumb {
+          background: var(--primary);
+          border-radius: 10px;
+        }
+        .video-card {
+          flex: 0 0 320px;
+          background: rgba(255, 255, 255, 0.03);
+          border: 1px solid var(--glass-border);
+          border-radius: 16px;
+          overflow: hidden;
+          cursor: pointer;
+          transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
+          display: flex;
+          flex-direction: column;
+        }
+        .video-card:hover {
+          transform: translateY(-5px);
+          box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+          border-color: rgba(255, 0, 0, 0.5);
+        }
+        .video-thumbnail-wrap {
+          position: relative;
+          width: 100%;
+          aspect-ratio: 16/9;
+          overflow: hidden;
+          background: #000;
+        }
+        .video-thumbnail-wrap img {
+          width: 100%;
+          height: 100%;
+          object-fit: cover;
+          transition: transform 0.5s ease;
+          opacity: 0.8;
+        }
+        .video-card:hover .video-thumbnail-wrap img {
+          transform: scale(1.05);
+          opacity: 1;
+        }
+        .play-overlay {
+          position: absolute;
+          inset: 0;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          background: rgba(0,0,0,0.3);
+          opacity: 0;
+          transition: opacity 0.3s ease;
+        }
+        .video-card:hover .play-overlay {
+          opacity: 1;
+        }
+        .play-overlay svg {
+          filter: drop-shadow(0 0 10px rgba(0,0,0,0.5));
+          transition: transform 0.3s ease;
+        }
+        .video-card:hover .play-overlay svg {
+          transform: scale(1.1);
+        }
+        .video-info {
+          padding: 16px;
+          flex: 1;
+          display: flex;
+          flex-direction: column;
+          justify-content: center;
+        }
+        .video-title {
+          font-size: 15px;
+          font-weight: 600;
+          color: var(--text-main);
+          margin: 0;
+          display: -webkit-box;
+          -webkit-line-clamp: 2;
+          -webkit-box-orient: vertical;
+          overflow: hidden;
+          line-height: 1.4;
+        }
+        .view-more-card {
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          background: linear-gradient(135deg, rgba(255,0,0,0.1), rgba(255,0,0,0.02));
+          border-color: rgba(255,0,0,0.2);
+        }
+        .view-more-card:hover {
+          border-color: #ff0000;
+          box-shadow: 0 0 20px rgba(255,0,0,0.2);
+        }
+        .view-more-content {
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          gap: 12px;
+          color: white;
+          font-weight: 600;
+          font-size: 16px;
+        }
            background: rgba(255, 255, 255, 0.03);
            border: 1px solid var(--glass-border);
            border-radius: 16px;
