@@ -47,3 +47,25 @@ class Review(models.Model):
     def __str__(self):
         return f"Review for {self.product.title} by {self.user.username}"
 
+
+class YouTubeVideo(models.Model):
+    title = models.CharField(max_length=255, blank=True)
+    youtube_url = models.URLField()
+    thumbnail_url = models.URLField(blank=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        ordering = ['-created_at']
+
+    def save(self, *args, **kwargs):
+        if self.youtube_url and not self.thumbnail_url:
+            import re
+            match = re.search(r'(?:v=|youtu\.be/|embed/)([^&?]+)', self.youtube_url)
+            if match:
+                video_id = match.group(1)
+                self.thumbnail_url = f"https://img.youtube.com/vi/{video_id}/hqdefault.jpg"
+        super().save(*args, **kwargs)
+
+    def __str__(self):
+        return self.title or self.youtube_url
+
