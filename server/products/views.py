@@ -2,8 +2,8 @@ from rest_framework import viewsets
 from rest_framework.permissions import IsAdminUser, AllowAny, IsAuthenticatedOrReadOnly
 from rest_framework.decorators import action
 from rest_framework.response import Response
-from .models import Product, Category, Review
-from .serializers import ProductSerializer, CategorySerializer, ReviewSerializer
+from .models import Product, Category, Review, YouTubeVideo
+from .serializers import ProductSerializer, CategorySerializer, ReviewSerializer, YouTubeVideoSerializer
 
 from rest_framework.pagination import PageNumberPagination
 from rest_framework.filters import OrderingFilter
@@ -65,4 +65,14 @@ class ReviewViewSet(viewsets.ModelViewSet):
 
     def perform_create(self, serializer):
         serializer.save(user=self.request.user)
+
+
+class YouTubeVideoViewSet(viewsets.ModelViewSet):
+    queryset = YouTubeVideo.objects.all()
+    serializer_class = YouTubeVideoSerializer
+
+    def get_permissions(self):
+        if self.action in ['list', 'retrieve']:
+            return [AllowAny()]
+        return [IsAdminUser()]
 
