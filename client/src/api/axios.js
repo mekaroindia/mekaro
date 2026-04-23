@@ -16,4 +16,21 @@ API.interceptors.request.use(
   (error) => Promise.reject(error)
 );
 
+// Handle expired tokens automatically
+API.interceptors.response.use(
+  (response) => response,
+  (error) => {
+    if (error.response && error.response.status === 401) {
+      // Clear invalid/expired token and user data
+      localStorage.removeItem("token");
+      localStorage.removeItem("user");
+      // Optional: redirect to login if not already there
+      if (window.location.pathname !== "/login") {
+        window.location.href = "/login";
+      }
+    }
+    return Promise.reject(error);
+  }
+);
+
 export default API;
