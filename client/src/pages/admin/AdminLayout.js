@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Outlet, useNavigate, useLocation } from "react-router-dom";
-import { FaChartBar, FaBoxOpen, FaSignOutAlt, FaRocket, FaProjectDiagram, FaEnvelope, FaCalendarAlt, FaUserShield, FaBars, FaTimes } from "react-icons/fa";
+import { FaChartBar, FaBoxOpen, FaSignOutAlt, FaRocket, FaProjectDiagram, FaEnvelope, FaCalendarAlt, FaUserShield, FaBars, FaTimes, FaYoutube } from "react-icons/fa";
 
 export default function AdminLayout() {
   const navigate = useNavigate();
@@ -25,6 +25,7 @@ export default function AdminLayout() {
     { label: "Overview", path: "/admin/dashboard", icon: <FaChartBar /> },
     { label: "Products", path: "/admin/products", icon: <FaBoxOpen /> },
     { label: "Categories", path: "/admin/categories", icon: <FaBoxOpen /> },
+    { label: "Videos", path: "/admin/videos", icon: <FaYoutube /> },
     { label: "Projects", path: "/admin/projects", icon: <FaProjectDiagram /> },
     { label: "Orders", path: "/admin/orders", icon: <FaBoxOpen /> },
     { label: "Manage Users", path: "/admin/users", icon: <FaUserShield /> },
