@@ -1,5 +1,5 @@
 from rest_framework import serializers
-from .models import Product, Category, ProductImage, Review
+from .models import Product, Category, ProductImage, Review, YouTubeVideo
 
 class CategorySerializer(serializers.ModelSerializer):
     class Meta:
@@ -56,3 +56,9 @@ class ProductSerializer(serializers.ModelSerializer):
             ProductImage.objects.create(product=product, image=image)
             
         return product
+
+
+class YouTubeVideoSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = YouTubeVideo
+        fields = '__all__'
