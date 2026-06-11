@@ -1,5 +1,5 @@
 # Prepare "Clean" Upload Folder for GitHub
-$source = "d:\ecomm-django-react"
+$source = $PSScriptRoot
 $dest = "d:\mekaro_clean_upload"
 
 Write-Host "Preparing clean folder at $dest..."

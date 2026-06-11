@@ -43,6 +43,10 @@ import CompleteProfile from "./pages/CompleteProfile"; // Added
 import OTPVerification from "./pages/OTPVerification";
 import ForgotPasswordFlow from "./pages/ForgotPasswordFlow";
 import AssistantChat from "./pages/AssistantChat"; // Added
+import TutorsAndStaff from "./pages/TutorsAndStaff";
+import StaffDetails from "./pages/StaffDetails";
+import AdminStaff from "./pages/admin/AdminStaff";
+
 
 function App() {
   const [showSplash, setShowSplash] = useState(() => {
@@ -77,6 +81,7 @@ function App() {
                 <Route path="dashboard" element={<AdminDashboard />} />
                 <Route path="orders" element={<AdminOrders />} />
                 <Route path="users" element={<AdminUsers />} />
+                <Route path="staff" element={<AdminStaff />} />
                 <Route path="products" element={<AdminProducts />} />
                 <Route path="categories" element={<AdminCategories />} />
                 <Route path="videos" element={<AdminVideos />} />
@@ -90,6 +95,8 @@ function App() {
               <Route path="/projects" element={<Projects />} />
               <Route path="/workshops" element={<Workshops />} />
               <Route path="/about" element={<About />} />
+              <Route path="/team" element={<TutorsAndStaff />} />
+              <Route path="/staff/:id" element={<StaffDetails />} />
               <Route path="/product/:id" element={<ProductPage />} />
               <Route path="/login" element={<Login />} />
               <Route path="/register" element={<Register />} />

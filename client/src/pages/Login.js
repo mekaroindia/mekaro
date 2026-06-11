@@ -6,10 +6,11 @@ import { toast } from "react-toastify";
 
 import { Link, useNavigate } from "react-router-dom";
 import { useGoogleLogin } from '@react-oauth/google';
-import { FaGoogle } from 'react-icons/fa';
+import { FaGoogle, FaEye, FaEyeSlash } from 'react-icons/fa';
 
 function Login() {
   const [form, setForm] = useState({ username: "", password: "" });
+  const [showPassword, setShowPassword] = useState(false);
   const navigate = useNavigate();
 
   const submit = () => {
@@ -143,14 +144,39 @@ function Login() {
             onBlur={(e) => e.target.style.borderColor = "var(--glass-border)"}
           />
 
-          <input
-            style={inputStyle}
-            placeholder="Password"
-            type="password"
-            onChange={(e) => setForm({ ...form, password: e.target.value })}
-            onFocus={(e) => e.target.style.borderColor = "var(--primary)"}
-            onBlur={(e) => e.target.style.borderColor = "var(--glass-border)"}
-          />
+          <div style={{ position: "relative", marginBottom: "20px" }}>
+            <input
+              style={{ ...inputStyle, marginBottom: 0, paddingRight: "45px" }}
+              placeholder="Password"
+              type={showPassword ? "text" : "password"}
+              onChange={(e) => setForm({ ...form, password: e.target.value })}
+              onFocus={(e) => e.target.style.borderColor = "var(--primary)"}
+              onBlur={(e) => e.target.style.borderColor = "var(--glass-border)"}
+            />
+            <button
+              type="button"
+              onClick={() => setShowPassword(!showPassword)}
+              style={{
+                position: "absolute",
+                right: "15px",
+                top: "50%",
+                transform: "translateY(-50%)",
+                background: "none",
+                border: "none",
+                color: "var(--text-muted)",
+                cursor: "pointer",
+                padding: "0",
+                display: "flex",
+                alignItems: "center",
+                fontSize: "18px",
+                outline: "none",
+              }}
+              onMouseEnter={(e) => e.currentTarget.style.color = "var(--primary)"}
+              onMouseLeave={(e) => e.currentTarget.style.color = "var(--text-muted)"}
+            >
+              {showPassword ? <FaEyeSlash /> : <FaEye />}
+            </button>
+          </div>
 
           <div style={{ textAlign: "right", marginTop: "-10px", marginBottom: "20px" }}>
             <Link

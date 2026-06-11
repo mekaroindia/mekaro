@@ -44,7 +44,7 @@ export default function Navbar() {
 
   return (
     <>
-      <div style={{ position: "sticky", top: 0, zIndex: 1000, background: "rgba(30, 41, 59, 0.95)", backdropFilter: "blur(12px)", borderBottom: "1px solid rgba(255,255,255,0.1)" }}>
+      <div style={{ position: "fixed", top: 0, left: 0, right: 0, zIndex: 1000, background: "rgba(30, 41, 59, 0.95)", backdropFilter: "blur(12px)", borderBottom: "1px solid rgba(255,255,255,0.1)" }}>
         <nav style={{ display: "flex", alignItems: "center", justifyContent: "space-between", padding: "12px 16px" }}>
 
           {/* LEFT: HAMBURGER (Mobile) + LOGO */}
@@ -89,6 +89,7 @@ export default function Navbar() {
             <div className="desktop-links" style={{ display: "flex", alignItems: "center", gap: "20px" }}>
               <Link to="/" style={linkStyle}>Home</Link>
               <Link to="/about" style={linkStyle}>About</Link>
+              <Link to="/team" style={linkStyle}>Tutors & Staff</Link>
               <Link to="/projects" style={linkStyle}>Projects</Link>
               <Link to="/workshops" style={linkStyle}>Workshops</Link>
             </div>
@@ -147,6 +148,7 @@ export default function Navbar() {
           </form>
         </div>
       </div>
+      <div className="navbar-spacer"></div>
 
       {/* MOBILE MENU DROPDOWN (Now mostly for navigation links) */}
       {mobileMenuOpen && (
@@ -161,6 +163,7 @@ export default function Navbar() {
 
           <Link to="/" onClick={() => setMobileMenuOpen(false)} style={linkStyle}>Home</Link>
           <Link to="/about" onClick={() => setMobileMenuOpen(false)} style={linkStyle}>About</Link>
+          <Link to="/team" onClick={() => setMobileMenuOpen(false)} style={linkStyle}>Tutors & Staff</Link>
           <Link to="/projects" onClick={() => setMobileMenuOpen(false)} style={linkStyle}>Projects</Link>
           <Link to="/workshops" onClick={() => setMobileMenuOpen(false)} style={linkStyle}>Workshops</Link>
 
@@ -176,6 +179,15 @@ export default function Navbar() {
       )}
 
       <style>{`
+        .navbar-spacer {
+          height: 64px;
+        }
+        @media (max-width: 768px) {
+          .navbar-spacer {
+            height: 110px;
+          }
+        }
+
         /* Desktop Defaults */
         .mobile-toggle { display: none !important; }
         .desktop-search { display: block; }

@@ -29,6 +29,7 @@ export default function AdminLayout() {
     { label: "Projects", path: "/admin/projects", icon: <FaProjectDiagram /> },
     { label: "Orders", path: "/admin/orders", icon: <FaBoxOpen /> },
     { label: "Manage Users", path: "/admin/users", icon: <FaUserShield /> },
+    { label: "Manage Staff", path: "/admin/staff", icon: <FaUserShield /> },
     { label: "Workshop Enquiries", path: "/admin/enquiries", icon: <FaEnvelope /> },
     { label: "Manage Workshops", path: "/admin/workshops", icon: <FaCalendarAlt /> },
     { label: "Project Requests", path: "/admin/project-orders", icon: <FaRocket /> },

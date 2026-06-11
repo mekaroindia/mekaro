@@ -1,6 +1,6 @@
 from rest_framework import serializers
 from django.contrib.auth.models import User
-from .models import Profile
+from .models import Profile, StaffMember
 from django.contrib.auth.password_validation import validate_password
 
 class ProfileSerializer(serializers.ModelSerializer):
@@ -40,3 +40,9 @@ class RegisterSerializer(serializers.Serializer):
         if User.objects.filter(email=value).exists():
             raise serializers.ValidationError("Email is already taken")
         return value
+
+class StaffMemberSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = StaffMember
+        fields = '__all__'
+

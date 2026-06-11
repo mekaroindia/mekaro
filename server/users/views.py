@@ -722,3 +722,36 @@ def update_user_admin_status(request, pk):
         'is_staff': user.is_staff,
         'message': f"User {user.username} is now {'an Admin' if user.is_staff else 'a User'}"
     })
+
+# --- Staff Member Views ---
+from rest_framework import viewsets, filters
+from rest_framework.pagination import PageNumberPagination
+from .models import StaffMember
+from .serializers import StaffMemberSerializer
+
+class StaffMemberPagination(PageNumberPagination):
+    page_size = 6
+    page_size_query_param = 'page_size'
+    max_page_size = 100
+
+class StaffMemberViewSet(viewsets.ModelViewSet):
+    serializer_class = StaffMemberSerializer
+    pagination_class = StaffMemberPagination
+    filter_backends = [filters.SearchFilter]
+    search_fields = ['name', 'role', 'expertise']
+
+    def get_queryset(self):
+        queryset = StaffMember.objects.all().order_by('-created_at')
+        member_type = self.request.query_params.get('type')
+        if member_type:
+            queryset = queryset.filter(type=member_type)
+        return queryset
+
+    def get_permissions(self):
+
+        if self.action in ['list', 'retrieve']:
+            permission_classes = [AllowAny]
+        else:
+            permission_classes = [IsAdminUser]
+        return [permission() for permission in permission_classes]
+

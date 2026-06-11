@@ -90,6 +90,7 @@ export default function Footer({ hideOnMobile }) {
           </div>
           <div className={`footer-link-list ${expanded['support'] ? 'expanded' : ''}`}>
             <a href="/about" className="footer-link">About Us</a>
+            <a href="/team" className="footer-link">Tutors & Staff</a>
             <a href="/contact" className="footer-link">Contact Support</a>
             <a href="/terms" className="footer-link">Terms of Service</a>
             <a href="/privacy" className="footer-link">Privacy Policy</a>

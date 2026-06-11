@@ -3,7 +3,7 @@ from django.urls import path, include
 from rest_framework.routers import DefaultRouter
 from products.views import ProductViewSet, CategoryViewSet, ReviewViewSet, YouTubeVideoViewSet
 from orders.views import create_order, get_order, get_my_orders, admin_dashboard_stats, admin_all_orders, admin_update_order_status, calculate_distance, initiate_payment, verify_payment, track_order
-from users.views import register_user, get_current_user, update_profile, change_password, subscribe_newsletter, google_login, get_all_users, update_user_admin_status, complete_google_signup, verify_email_otp, resend_email_otp, edit_unverified_email, request_password_reset, verify_reset_otp, reset_forgotten_password
+from users.views import register_user, get_current_user, update_profile, change_password, subscribe_newsletter, google_login, get_all_users, update_user_admin_status, complete_google_signup, verify_email_otp, resend_email_otp, edit_unverified_email, request_password_reset, verify_reset_otp, reset_forgotten_password, StaffMemberViewSet
 from rest_framework_simplejwt.views import (
     TokenObtainPairView,
     TokenRefreshView,
@@ -17,6 +17,8 @@ router.register(r'products', ProductViewSet)
 router.register(r'categories', CategoryViewSet)
 router.register(r'reviews', ReviewViewSet)
 router.register(r'videos', YouTubeVideoViewSet)
+router.register(r'staff', StaffMemberViewSet, basename='staff')
+
 
 urlpatterns = [
     path('admin/', admin.site.urls),
