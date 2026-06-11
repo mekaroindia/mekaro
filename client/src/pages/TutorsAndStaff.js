@@ -185,7 +185,7 @@ export default function TutorsAndStaff() {
                       <div className="frame-corner frame-corner-br"></div>
                       {member.image ? (
                         <img 
-                          src={member.image.startsWith("http") ? member.image : `${process.env.REACT_APP_API_URL || "http://localhost:8000"}${member.image}`} 
+                          src={member.image}
                           alt={member.name} 
                           className="core-profile-img-rectangular"
                         />
