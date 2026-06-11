@@ -7,7 +7,7 @@ export const coreTeam = [
     linkedin: "https://www.linkedin.com/in/harish0746",
     email: "harishl7406@gmail.com",
     avatar: "robotics-tutor-1",
-    image: "/server/media/Coreteam/harish.jpg"
+    image: "/assets/Coreteam/harish.jpg"
   },
   {
     id: 2,
@@ -17,7 +17,7 @@ export const coreTeam = [
     linkedin: "https://www.linkedin.com/in/kannan-suresh-vadakke-veetil-65a913303/",
     email: "kannasureahvv1227@gmail.com",
     avatar: "iot-tutor-2",
-    image: "/media/Coreteam/kannan.jpg"
+    image: "/assets/Coreteam/kannan.jpg"
   },
   {
     id: 3,
@@ -27,7 +27,7 @@ export const coreTeam = [
     linkedin: "https://www.linkedin.com/in/hariharan9141/",
     email: "hhariharan489@gmail.com",
     avatar: "drone-tutor-3",
-    image: "/media/Coreteam/hari.jpg"
+    image: "/assets/Coreteam/hari.jpg"
   },
   {
     id: 4,
@@ -37,6 +37,6 @@ export const coreTeam = [
     linkedin: "https://www.linkedin.com/in/ashwin-kumar-bb6473298/",
     email: "ashwinkumarachu005@gmail.com",
     avatar: "drone-tutor-3",
-    image: "/media/Coreteam/ashwin.jpg"
+    image: "/assets/Coreteam/ashwin.jpg"
   }
 ];
