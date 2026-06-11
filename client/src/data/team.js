@@ -7,7 +7,7 @@ export const coreTeam = [
     linkedin: "https://www.linkedin.com/in/harish0746",
     email: "harishl7406@gmail.com",
     avatar: "robotics-tutor-1",
-    image: "/media/Coreteam/harish.jpg"
+    image: "../../server/media/Coreteam/harish.jpg"
   },
   {
     id: 2,
