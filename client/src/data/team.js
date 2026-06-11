@@ -24,7 +24,7 @@ export const coreTeam = [
     name: "HARI HARAN G",
     role: "CO-FOUNDER & COO",
     bio: "Aerospace enthusiast and UAV developer. Aarav's go-to person for complex PID tuning, flight dynamics, and ROS flight integration.",
-    linkedin: "https://linkedin.com/in/vikram-malhotra-uav",
+    linkedin: "https://www.linkedin.com/in/hariharan9141/",
     email: "hhariharan489@gmail.com",
     avatar: "drone-tutor-3",
     image: "/media/Coreteam/hari.jpg"
