@@ -14,6 +14,7 @@ import {
   FaSortAmountDown, FaChevronDown, FaLayerGroup, FaYoutube, FaPlayCircle
 } from "react-icons/fa";
 import { calculateFakeOriginalPrice } from "../utils/priceHelper";
+import { getImageUrl } from "../utils/imageUtils";
 
 export default function Home() {
   const [products, setProducts] = useState([]);
@@ -481,9 +482,10 @@ export default function Home() {
                 >
                   <div className="product-img-wrap">
                     <img
-                      src={product.product_images?.length > 0 ? product.product_images[0].image : (product.images?.[0] || "https://via.placeholder.com/300x300?text=No+Image")}
+                      src={getImageUrl(product.product_images?.length > 0 ? product.product_images[0].image : (product.images?.[0])) || "https://via.placeholder.com/300x300?text=No+Image"}
                       alt={product.title}
                       style={{ width: "100%", height: "100%", objectFit: "contain", padding: "10px" }}
+                      onError={(e) => { e.currentTarget.src = "https://via.placeholder.com/300x300?text=No+Image"; }}
                     />
                     {/* Badge example */}
                     <div style={{

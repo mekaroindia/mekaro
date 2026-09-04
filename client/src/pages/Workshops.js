@@ -5,6 +5,7 @@ import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
 // import { useTranslation } from 'react-i18next';
 import API from "../api/axios";
+import { getImageUrl } from "../utils/imageUtils";
 
 export default function Workshops() {
     // const { t } = useTranslation();
@@ -97,7 +98,12 @@ export default function Workshops() {
                                 <div key={workshop.id} className="workshop-card">
                                     <div className="workshop-img-wrapper" style={{ height: "200px", overflow: "hidden" }}>
                                         {workshop.images && workshop.images.length > 0 ? (
-                                            <img src={workshop.images[0].image} alt={workshop.title} style={{ width: "100%", height: "100%", objectFit: "cover" }} />
+                                            <img 
+                                                src={getImageUrl(workshop.images[0].image)} 
+                                                alt={workshop.title} 
+                                                style={{ width: "100%", height: "100%", objectFit: "cover" }} 
+                                                onError={(e) => { e.currentTarget.style.display = 'none'; }}
+                                            />
                                         ) : (
                                             <div style={{ width: "100%", height: "100%", background: "#334155", display: "flex", alignItems: "center", justifyContent: "center", color: "#94a3b8" }}>No Image</div>
                                         )}
@@ -116,8 +122,14 @@ export default function Workshops() {
                                         {workshop.images && workshop.images.length > 1 && (
                                             <div className="additional-images-grid" style={{ display: "grid", gridTemplateColumns: "repeat(4, 1fr)", gap: "5px", marginBottom: "15px" }}>
                                                 {workshop.images.slice(1, 5).map((img) => (
-                                                    <img key={img.id} src={img.image} alt="workshop thumb" style={{ width: "100%", aspectRatio: "1/1", objectFit: "cover", borderRadius: "4px", cursor: "pointer" }}
-                                                        onClick={() => window.open(img.image, '_blank')} />
+                                                    <img 
+                                                        key={img.id} 
+                                                        src={getImageUrl(img.image)} 
+                                                        alt="workshop thumb" 
+                                                        style={{ width: "100%", aspectRatio: "1/1", objectFit: "cover", borderRadius: "4px", cursor: "pointer" }}
+                                                        onClick={() => window.open(getImageUrl(img.image), '_blank')} 
+                                                        onError={(e) => { e.currentTarget.style.display = 'none'; }}
+                                                    />
                                                 ))}
                                             </div>
                                         )}
@@ -144,7 +156,12 @@ export default function Workshops() {
                                 }}>
                                     <div className="workshop-img-wrapper" style={{ height: "180px", overflow: "hidden" }}>
                                         {workshop.images && workshop.images.length > 0 ? (
-                                            <img src={workshop.images[0].image} alt={workshop.title} style={{ width: "100%", height: "100%", objectFit: "cover", opacity: "0.8" }} />
+                                            <img 
+                                                src={getImageUrl(workshop.images[0].image)} 
+                                                alt={workshop.title} 
+                                                style={{ width: "100%", height: "100%", objectFit: "cover", opacity: "0.8" }} 
+                                                onError={(e) => { e.currentTarget.style.display = 'none'; }}
+                                            />
                                         ) : (
                                             <div style={{ width: "100%", height: "100%", background: "#334155", display: "flex", alignItems: "center", justifyContent: "center", color: "#94a3b8" }}>No Image</div>
                                         )}
@@ -160,7 +177,13 @@ export default function Workshops() {
                                         {workshop.images && workshop.images.length > 1 && (
                                             <div className="additional-images-grid" style={{ display: "grid", gridTemplateColumns: "repeat(4, 1fr)", gap: "5px", marginTop: "10px" }}>
                                                 {workshop.images.slice(1, 5).map((img) => (
-                                                    <img key={img.id} src={img.image} alt="workshop thumb" style={{ width: "100%", aspectRatio: "1/1", objectFit: "cover", borderRadius: "4px", opacity: "0.7" }} />
+                                                    <img 
+                                                        key={img.id} 
+                                                        src={getImageUrl(img.image)} 
+                                                        alt="workshop thumb" 
+                                                        style={{ width: "100%", aspectRatio: "1/1", objectFit: "cover", borderRadius: "4px", opacity: "0.7" }} 
+                                                        onError={(e) => { e.currentTarget.style.display = 'none'; }}
+                                                    />
                                                 ))}
                                             </div>
                                         )}

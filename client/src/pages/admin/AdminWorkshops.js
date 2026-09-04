@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import API from "../../api/axios";
 import { FaPlus, FaEdit, FaTrash, FaTimes, FaCalendarAlt, FaMapMarkerAlt, FaImage } from "react-icons/fa";
 import { toast } from "react-toastify";
+import { getImageUrl } from "../../utils/imageUtils";
 
 export default function AdminWorkshops() {
     const [workshops, setWorkshops] = useState([]);
@@ -150,7 +151,13 @@ export default function AdminWorkshops() {
 
                             <div style={{ display: "flex", gap: "5px", marginBottom: "15px", overflowX: "auto" }}>
                                 {workshop.images && workshop.images.map(img => (
-                                    <img key={img.id} src={img.image} alt="workshop" style={{ width: "50px", height: "50px", objectFit: "cover", borderRadius: "4px" }} />
+                                    <img 
+                                        key={img.id} 
+                                        src={getImageUrl(img.image)} 
+                                        alt="workshop" 
+                                        style={{ width: "50px", height: "50px", objectFit: "cover", borderRadius: "4px" }} 
+                                        onError={(e) => { e.currentTarget.style.display = 'none'; }}
+                                    />
                                 ))}
                             </div>
 
@@ -185,7 +192,12 @@ export default function AdminWorkshops() {
                                         <div style={{ display: "flex", flexWrap: "wrap", gap: "10px" }}>
                                             {editingWorkshop.images && editingWorkshop.images.map(img => (
                                                 <div key={img.id} style={{ position: "relative" }}>
-                                                    <img src={img.image} alt="workshop" style={{ width: "80px", height: "80px", objectFit: "cover", borderRadius: "8px" }} />
+                                                    <img 
+                                                        src={getImageUrl(img.image)} 
+                                                        alt="workshop" 
+                                                        style={{ width: "80px", height: "80px", objectFit: "cover", borderRadius: "8px" }} 
+                                                        onError={(e) => { e.currentTarget.style.display = 'none'; }}
+                                                    />
                                                     <button type="button" onClick={() => handleDeleteImage(editingWorkshop.id, img.id)}
                                                         style={{ position: "absolute", top: "-5px", right: "-5px", background: "red", color: "white", borderRadius: "50%", width: "20px", height: "20px", border: "none", cursor: "pointer", display: "flex", alignItems: "center", justifyContent: "center", fontSize: "10px" }}>
                                                         <FaTimes />

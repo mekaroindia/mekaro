@@ -8,6 +8,7 @@ import { FaRobot, FaMicrochip, FaCogs, FaProjectDiagram, FaCheckCircle, FaShoppi
 import API from "../api/axios";
 import { toast } from "react-toastify";
 import { calculateFakeOriginalPrice } from "../utils/priceHelper";
+import { getImageUrl } from "../utils/imageUtils";
 
 export default function Projects() {
     const navigate = useNavigate();
@@ -155,8 +156,9 @@ export default function Projects() {
                                         >
                                             <div className="project-img-wrap">
                                                 <img
-                                                    src={project.product_images?.length > 0 ? project.product_images[0].image : (project.images?.[0] || "https://via.placeholder.com/300x200?text=Project")}
+                                                    src={getImageUrl(project.product_images?.length > 0 ? project.product_images[0].image : (project.images?.[0])) || "https://via.placeholder.com/300x200?text=Project"}
                                                     alt={project.title}
+                                                    onError={(e) => { e.currentTarget.src = "https://via.placeholder.com/300x200?text=Project"; }}
                                                 />
                                             </div>
                                             <div className="project-info">

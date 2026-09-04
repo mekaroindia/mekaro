@@ -46,3 +46,12 @@ class StaffMemberSerializer(serializers.ModelSerializer):
         model = StaffMember
         fields = '__all__'
 
+    def to_representation(self, instance):
+        ret = super().to_representation(instance)
+        img_url = ret.get('image')
+        if img_url and isinstance(img_url, str):
+            # Ensure HTTPS for production / CDN URLs to avoid mixed content blocking
+            if img_url.startswith('http://') and 'localhost' not in img_url and '127.0.0.1' not in img_url:
+                ret['image'] = img_url.replace('http://', 'https://', 1)
+        return ret
+

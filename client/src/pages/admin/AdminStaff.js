@@ -2,7 +2,8 @@ import React, { useState, useEffect } from "react";
 import API from "../../api/axios";
 import { toast } from "react-toastify";
 import ModernLoader from "../../components/ModernLoader";
-import { FaEdit, FaTrash, FaPlus, FaTimes, FaUserTie, FaChevronLeft, FaChevronRight } from "react-icons/fa";
+import { FaEdit, FaTrash, FaPlus, FaTimes, FaUserTie, FaChalkboardTeacher, FaChevronLeft, FaChevronRight, FaImage } from "react-icons/fa";
+import { getImageUrl } from "../../utils/imageUtils";
 
 export default function AdminStaff() {
   const [staffList, setStaffList] = useState([]);
@@ -23,8 +24,11 @@ export default function AdminStaff() {
     expertise: "",
     linkedin: "",
     email: "",
-    imageFile: null
+    imageFile: null,
+    existingImage: null
   });
+
+  const [previewUrl, setPreviewUrl] = useState(null);
 
   const fetchStaff = async () => {
     setLoading(true);
@@ -57,10 +61,12 @@ export default function AdminStaff() {
 
   const handleFileChange = (e) => {
     if (e.target.files && e.target.files.length > 0) {
+      const file = e.target.files[0];
       setFormData({
         ...formData,
-        imageFile: e.target.files[0]
+        imageFile: file
       });
+      setPreviewUrl(URL.createObjectURL(file));
     }
   };
 
@@ -80,20 +86,11 @@ export default function AdminStaff() {
         data.append("image", formData.imageFile);
       }
 
-      const config = {
-        headers: {
-          "Content-Type": "multipart/form-data",
-        },
-      };
-
       if (editMode) {
-        // If image is not a new file, we don't send it to prevent overriding with null
-        // DRF requires standard multipart PATCH. In some setups, PATCH with empty file field might clear it.
-        // So we only append if it is an actual new File object.
-        await API.patch(`/api/staff/${selectedId}/`, data, config);
+        await API.patch(`/api/staff/${selectedId}/`, data);
         toast.success("Staff member updated successfully!");
       } else {
-        await API.post("/api/staff/", data, config);
+        await API.post("/api/staff/", data);
         toast.success("Staff member created successfully!");
       }
       
@@ -128,8 +125,10 @@ export default function AdminStaff() {
       expertise: "",
       linkedin: "",
       email: "",
-      imageFile: null
+      imageFile: null,
+      existingImage: null
     });
+    setPreviewUrl(null);
     setShowModal(true);
   };
 
@@ -144,8 +143,10 @@ export default function AdminStaff() {
       expertise: staff.expertise || "",
       linkedin: staff.linkedin || "",
       email: staff.email || "",
-      imageFile: null // reset image file to allow new upload only
+      imageFile: null,
+      existingImage: staff.image || null
     });
+    setPreviewUrl(getImageUrl(staff.image));
     setShowModal(true);
   };
 
@@ -189,54 +190,80 @@ export default function AdminStaff() {
           </thead>
           <tbody>
             {staffList.length > 0 ? (
-              staffList.map((s) => (
-                <tr key={s.id} style={{ borderBottom: "1px solid rgba(255,255,255,0.05)" }}>
-                  <td style={{ padding: "16px" }}>
-                    <div style={{
-                      width: "40px",
-                      height: "40px",
-                      borderRadius: "50%",
-                      background: "rgba(255,255,255,0.05)",
-                      display: "flex",
-                      alignItems: "center",
-                      justifycontent: "center",
-                      overflow: "hidden"
-                    }}>
-                      {s.image ? (
-                        <img src={s.image} alt={s.name} style={{ width: "100%", height: "100%", objectFit: "cover" }} />
-                      ) : (
-                        <FaUserTie style={{ color: s.type === "tutor" ? "var(--primary)" : "#a855f7", fontSize: "1.2rem", margin: "auto" }} />
-                      )}
-                    </div>
-                  </td>
-                  <td style={{ padding: "16px", fontWeight: "600" }}>{s.name}</td>
-                  <td style={{ padding: "16px", color: "#cbd5e1" }}>{s.role}</td>
-                  <td style={{ padding: "16px" }}>
-                    <span style={{
-                      fontSize: "0.75rem",
-                      fontWeight: "700",
-                      textTransform: "uppercase",
-                      letterSpacing: "1px",
-                      padding: "4px 10px",
-                      borderRadius: "12px",
-                      background: s.type === "tutor" ? "rgba(6, 182, 212, 0.1)" : "rgba(168, 85, 247, 0.1)",
-                      color: s.type === "tutor" ? "var(--primary)" : "#a855f7",
-                      border: `1px solid ${s.type === "tutor" ? "rgba(6, 182, 212, 0.2)" : "rgba(168, 85, 247, 0.2)"}`
-                    }}>
-                      {s.type === "tutor" ? "Tutor" : "Staff"}
-                    </span>
-                  </td>
-                  <td style={{ padding: "16px", color: "var(--text-muted)", fontSize: "0.85rem" }}>
-                    {s.expertise ? s.expertise : "-"}
-                  </td>
-                  <td style={{ padding: "16px" }}>
-                    <div style={{ display: "flex", gap: "12px" }}>
-                      <button onClick={() => openEdit(s)} style={{ background: "none", border: "none", color: "var(--primary)", cursor: "pointer", fontSize: "1.1rem" }}><FaEdit /></button>
-                      <button onClick={() => handleDelete(s.id)} style={{ background: "none", border: "none", color: "#ef4444", cursor: "pointer", fontSize: "1.1rem" }}><FaTrash /></button>
-                    </div>
-                  </td>
-                </tr>
-              ))
+              staffList.map((s) => {
+                const avatarUrl = getImageUrl(s.image);
+                return (
+                  <tr key={s.id} style={{ borderBottom: "1px solid rgba(255,255,255,0.05)" }}>
+                    <td style={{ padding: "16px" }}>
+                      <div style={{
+                        width: "44px",
+                        height: "44px",
+                        borderRadius: "50%",
+                        background: "rgba(255,255,255,0.05)",
+                        display: "flex",
+                        alignItems: "center",
+                        justifyContent: "center",
+                        overflow: "hidden",
+                        border: "1px solid var(--glass-border)"
+                      }}>
+                        {avatarUrl ? (
+                          <img 
+                            src={avatarUrl} 
+                            alt={s.name} 
+                            style={{ width: "100%", height: "100%", objectFit: "cover" }} 
+                            onError={(e) => {
+                              // If image fails, replace with icon fallback
+                              e.currentTarget.style.display = "none";
+                              if (e.currentTarget.nextSibling) {
+                                e.currentTarget.nextSibling.style.display = "flex";
+                              }
+                            }}
+                          />
+                        ) : null}
+                        <div style={{ 
+                          display: avatarUrl ? "none" : "flex", 
+                          alignItems: "center", 
+                          justifyContent: "center", 
+                          width: "100%", 
+                          height: "100%" 
+                        }}>
+                          {s.type === "tutor" ? (
+                            <FaChalkboardTeacher style={{ color: "var(--primary)", fontSize: "1.2rem" }} />
+                          ) : (
+                            <FaUserTie style={{ color: "#a855f7", fontSize: "1.2rem" }} />
+                          )}
+                        </div>
+                      </div>
+                    </td>
+                    <td style={{ padding: "16px", fontWeight: "600" }}>{s.name}</td>
+                    <td style={{ padding: "16px", color: "#cbd5e1" }}>{s.role}</td>
+                    <td style={{ padding: "16px" }}>
+                      <span style={{
+                        fontSize: "0.75rem",
+                        fontWeight: "700",
+                        textTransform: "uppercase",
+                        letterSpacing: "1px",
+                        padding: "4px 10px",
+                        borderRadius: "12px",
+                        background: s.type === "tutor" ? "rgba(6, 182, 212, 0.1)" : "rgba(168, 85, 247, 0.1)",
+                        color: s.type === "tutor" ? "var(--primary)" : "#a855f7",
+                        border: `1px solid ${s.type === "tutor" ? "rgba(6, 182, 212, 0.2)" : "rgba(168, 85, 247, 0.2)"}`
+                      }}>
+                        {s.type === "tutor" ? "Tutor" : "Staff"}
+                      </span>
+                    </td>
+                    <td style={{ padding: "16px", color: "var(--text-muted)", fontSize: "0.85rem" }}>
+                      {s.expertise ? s.expertise : "-"}
+                    </td>
+                    <td style={{ padding: "16px" }}>
+                      <div style={{ display: "flex", gap: "12px" }}>
+                        <button onClick={() => openEdit(s)} style={{ background: "none", border: "none", color: "var(--primary)", cursor: "pointer", fontSize: "1.1rem" }}><FaEdit /></button>
+                        <button onClick={() => handleDelete(s.id)} style={{ background: "none", border: "none", color: "#ef4444", cursor: "pointer", fontSize: "1.1rem" }}><FaTrash /></button>
+                      </div>
+                    </td>
+                  </tr>
+                );
+              })
             ) : (
               <tr>
                 <td colSpan="6" style={{ padding: "30px", textAlign: "center", color: "var(--text-muted)" }}>
@@ -376,7 +403,31 @@ export default function AdminStaff() {
                   cursor: "pointer",
                   background: "rgba(255,255,255,0.02)"
                 }} onClick={() => document.getElementById('staffFileInput').click()}>
-                  <span style={{ color: "var(--primary)", fontWeight: "bold" }}>+ Upload Image File</span>
+                  {previewUrl ? (
+                    <div style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: "15px" }}>
+                      <img 
+                        src={previewUrl} 
+                        alt="Preview" 
+                        style={{ width: "60px", height: "60px", borderRadius: "50%", objectFit: "cover", border: "2px solid var(--primary)" }} 
+                        onError={(e) => { e.currentTarget.style.display = 'none'; }}
+                      />
+                      <div style={{ textAlign: "left" }}>
+                        <span style={{ color: "var(--primary)", fontWeight: "bold", fontSize: "0.9rem" }}>
+                          {formData.imageFile ? `Selected: ${formData.imageFile.name}` : "Change Photo"}
+                        </span>
+                        <div style={{ fontSize: "0.75rem", color: "var(--text-muted)", marginTop: "2px" }}>
+                          Click to select a different image
+                        </div>
+                      </div>
+                    </div>
+                  ) : (
+                    <div>
+                      <span style={{ color: "var(--primary)", fontWeight: "bold" }}>+ Upload Image File</span>
+                      <div style={{ fontSize: "0.75rem", color: "var(--text-muted)", marginTop: "4px" }}>
+                        PNG, JPG, JPEG, WEBP
+                      </div>
+                    </div>
+                  )}
                   <input
                     id="staffFileInput"
                     type="file"
@@ -384,11 +435,6 @@ export default function AdminStaff() {
                     onChange={handleFileChange}
                     style={{ display: "none" }}
                   />
-                  {formData.imageFile && (
-                    <div style={{ marginTop: "8px", fontSize: "0.85rem", color: "var(--primary)" }}>
-                      {formData.imageFile.name} Selected
-                    </div>
-                  )}
                 </div>
               </div>
 

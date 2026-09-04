@@ -1,7 +1,21 @@
 import axios from "axios";
 
+const getBaseUrl = () => {
+  if (process.env.REACT_APP_API_URL) {
+    return process.env.REACT_APP_API_URL;
+  }
+  if (typeof window !== "undefined") {
+    const host = window.location.hostname;
+    if (host === "localhost" || host === "127.0.0.1") {
+      return "http://localhost:8000";
+    }
+    return "https://mekaro-backend.onrender.com";
+  }
+  return "https://mekaro-backend.onrender.com";
+};
+
 const API = axios.create({
-  baseURL: process.env.REACT_APP_API_URL || "http://localhost:8000",
+  baseURL: getBaseUrl(),
 });
 
 // Automatically attach token to every request

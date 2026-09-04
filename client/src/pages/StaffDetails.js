@@ -7,6 +7,7 @@ import { coreTeam } from "../data/team";
 import API from "../api/axios";
 import { FaLinkedin, FaEnvelope, FaChevronLeft, FaChalkboardTeacher, FaUserTie, FaTools } from "react-icons/fa";
 import ModernLoader from "../components/ModernLoader";
+import { getImageUrl } from "../utils/imageUtils";
 
 export default function StaffDetails() {
   const { id } = useParams();
@@ -145,13 +146,7 @@ export default function StaffDetails() {
     : [];
 
   // Get image URL
-  const imageUrl = member.image
-    ? member.image.startsWith("http") || member.image.startsWith("/media/")
-      ? member.image.startsWith("http")
-        ? member.image
-        : `${process.env.REACT_APP_API_URL || "http://localhost:8000"}${member.image}`
-      : member.image
-    : null;
+  const imageUrl = getImageUrl(member.image);
 
   return (
     <div className="staff-details-page">
@@ -191,12 +186,21 @@ export default function StaffDetails() {
                     <div className="frame-corner frame-corner-bl"></div>
                     <div className="frame-corner frame-corner-br"></div>
                     {imageUrl ? (
-                      <img src={imageUrl} alt={member.name} className="profile-image" />
-                    ) : (
-                      <div className="profile-fallback">
-                        {member.type === "tutor" || member.isCore ? <FaChalkboardTeacher /> : <FaUserTie />}
-                      </div>
-                    )}
+                      <img 
+                        src={imageUrl} 
+                        alt={member.name} 
+                        className="profile-image" 
+                        onError={(e) => {
+                          e.currentTarget.style.display = 'none';
+                          if (e.currentTarget.nextSibling) {
+                            e.currentTarget.nextSibling.style.display = 'flex';
+                          }
+                        }}
+                      />
+                    ) : null}
+                    <div className="profile-fallback" style={{ display: imageUrl ? 'none' : 'flex' }}>
+                      {member.type === "tutor" || member.isCore ? <FaChalkboardTeacher /> : <FaUserTie />}
+                    </div>
                   </div>
                 </div>
 

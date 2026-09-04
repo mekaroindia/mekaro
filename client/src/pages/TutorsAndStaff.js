@@ -7,6 +7,7 @@ import { coreTeam } from "../data/team";
 import API from "../api/axios";
 import { FaLinkedin, FaEnvelope, FaSearch, FaChalkboardTeacher, FaUserTie, FaGraduationCap, FaChevronLeft, FaChevronRight } from "react-icons/fa";
 import ModernLoader from "../components/ModernLoader";
+import { getImageUrl } from "../utils/imageUtils";
 
 export default function TutorsAndStaff() {
   const navigate = useNavigate();
@@ -185,15 +186,20 @@ export default function TutorsAndStaff() {
                       <div className="frame-corner frame-corner-br"></div>
                       {member.image ? (
                         <img 
-                          src={member.image}
+                          src={getImageUrl(member.image)} 
                           alt={member.name} 
                           className="core-profile-img-rectangular"
+                          onError={(e) => {
+                            e.currentTarget.style.display = 'none';
+                            if (e.currentTarget.nextSibling) {
+                              e.currentTarget.nextSibling.style.display = 'flex';
+                            }
+                          }}
                         />
-                      ) : (
-                        <div className="avatar-fallback-rectangular">
-                          <FaChalkboardTeacher />
-                        </div>
-                      )}
+                      ) : null}
+                      <div className="avatar-fallback-rectangular" style={{ display: member.image ? 'none' : 'flex' }}>
+                        <FaChalkboardTeacher />
+                      </div>
                     </div>
                   </div>
                 </div>
@@ -335,19 +341,23 @@ export default function TutorsAndStaff() {
                           <div className="frame-corner frame-corner-br"></div>
                           {member.image ? (
                             <img 
-                              src={member.image.startsWith("http") ? member.image : `${process.env.REACT_APP_API_URL || "http://localhost:8000"}${member.image}`} 
+                              src={getImageUrl(member.image)} 
                               alt={member.name} 
                               className="core-profile-img-rectangular"
+                              onError={(e) => {
+                                e.currentTarget.style.display = 'none';
+                                if (e.currentTarget.nextSibling) {
+                                  e.currentTarget.nextSibling.style.display = 'flex';
+                                }
+                              }}
                             />
-                          ) : member.type === "tutor" ? (
-                            <div className="avatar-fallback-rectangular fallback-tutor">
-                              <FaChalkboardTeacher />
-                            </div>
-                          ) : (
-                            <div className="avatar-fallback-rectangular fallback-staff">
-                              <FaUserTie />
-                            </div>
-                          )}
+                          ) : null}
+                          <div 
+                            className={`avatar-fallback-rectangular ${member.type === "tutor" ? "fallback-tutor" : "fallback-staff"}`}
+                            style={{ display: member.image ? 'none' : 'flex' }}
+                          >
+                            {member.type === "tutor" ? <FaChalkboardTeacher /> : <FaUserTie />}
+                          </div>
                         </div>
                       </div>
                     </div>

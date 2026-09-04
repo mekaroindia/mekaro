@@ -10,6 +10,7 @@ import { FaShoppingCart, FaArrowLeft, FaStar, FaBolt, FaBox, FaShieldAlt, FaChec
 import ModernLoader from "../components/ModernLoader";
 import Rating from "react-rating";
 import { calculateFakeOriginalPrice } from "../utils/priceHelper";
+import { getImageUrl } from "../utils/imageUtils";
 
 export default function ProductPage() {
   const { id } = useParams();
@@ -199,8 +200,8 @@ export default function ProductPage() {
   // Helper to get all images for rendering
   const getAllImages = () => {
     if (!product) return [];
-    if (product.product_images?.length > 0) return product.product_images.map(p => p.image);
-    if (product.images?.length > 0) return product.images;
+    if (product.product_images?.length > 0) return product.product_images.map(p => getImageUrl(p.image)).filter(Boolean);
+    if (product.images?.length > 0) return product.images.map(img => getImageUrl(img)).filter(Boolean);
     return ["https://via.placeholder.com/600x400?text=No+Image"];
   };
 
@@ -501,8 +502,9 @@ export default function ProductPage() {
                   >
                     <div className="related-img-box">
                       <img
-                        src={p.product_images?.length > 0 ? p.product_images[0].image : (p.images?.[0] || "https://via.placeholder.com/300x300")}
+                        src={getImageUrl(p.product_images?.length > 0 ? p.product_images[0].image : (p.images?.[0])) || "https://via.placeholder.com/300x300"}
                         alt={p.title}
+                        onError={(e) => { e.currentTarget.src = "https://via.placeholder.com/300x300"; }}
                       />
                     </div>
                     <div className="related-info">

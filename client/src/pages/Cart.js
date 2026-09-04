@@ -5,6 +5,7 @@ import { Link, useNavigate } from "react-router-dom";
 import Container from "../components/Container";
 import Footer from "../components/Footer";
 import { calculateFakeOriginalPrice } from "../utils/priceHelper";
+import { getImageUrl } from "../utils/imageUtils";
 
 export default function Cart() {
   const { cart, updateQty, removeItem } = useContext(CartContext);
@@ -38,11 +39,14 @@ export default function Cart() {
                   <div className="item-img-wrapper">
                     <img
                       src={
-                        item.product_images?.length > 0
-                          ? item.product_images[0].image
-                          : (item.images?.[0] || "https://via.placeholder.com/150?text=No+Image")
+                        getImageUrl(
+                          item.product_images?.length > 0
+                            ? item.product_images[0].image
+                            : (item.images?.[0])
+                        ) || "https://via.placeholder.com/150?text=No+Image"
                       }
                       alt={item.title}
+                      onError={(e) => { e.currentTarget.src = "https://via.placeholder.com/150?text=No+Image"; }}
                     />
                   </div>
                   <div className="item-details">
