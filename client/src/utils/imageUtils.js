@@ -29,8 +29,16 @@ export const getImageUrl = (imagePath) => {
   const trimmed = imagePath.trim();
   if (!trimmed) return null;
 
-  // Static core team assets located in client/public
-  if (trimmed.startsWith("/media/Coreteam/") || trimmed.startsWith("media/Coreteam/")) {
+  // Static frontend assets located in client/public (e.g. Core team, banners, icons)
+  if (
+    trimmed.startsWith("/assets/") ||
+    trimmed.startsWith("assets/") ||
+    trimmed.startsWith("/media/Coreteam/") ||
+    trimmed.startsWith("media/Coreteam/") ||
+    trimmed.startsWith("/logo") ||
+    trimmed.startsWith("logo") ||
+    trimmed.startsWith("/favicon")
+  ) {
     return trimmed.startsWith("/") ? trimmed : `/${trimmed}`;
   }
 
