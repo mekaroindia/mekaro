@@ -22,8 +22,9 @@ function Login() {
         let isStaff = false;
         try {
           const userRes = await API.get("/api/user/");
+          localStorage.setItem("user", JSON.stringify(userRes.data));
           sessionStorage.setItem("user", JSON.stringify(userRes.data));
-          isStaff = userRes.data.is_staff;
+          isStaff = Boolean(userRes.data?.is_staff || userRes.data?.isAdmin || userRes.data?.is_superuser);
         } catch (err) {
           console.error("Failed to fetch user details", err);
         }
@@ -60,11 +61,13 @@ function Login() {
         }
 
         localStorage.setItem("token", res.data.access);
+        localStorage.setItem("user", JSON.stringify(res.data.user));
         sessionStorage.setItem("user", JSON.stringify(res.data.user));
 
         toast.success("Welcome back!", { position: "top-center", autoClose: 1500 });
+        const isStaff = Boolean(res.data?.user?.isAdmin || res.data?.user?.is_staff || res.data?.user?.is_superuser);
         setTimeout(() => {
-          navigate(res.data.user.isAdmin ? "/admin" : "/");
+          navigate(isStaff ? "/admin/dashboard" : "/");
         }, 1500);
 
       } catch (err) {

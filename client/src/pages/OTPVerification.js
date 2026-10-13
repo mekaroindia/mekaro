@@ -53,8 +53,10 @@ export default function OTPVerification() {
             // Auto-login
             if (res.data.access && res.data.user) {
                 localStorage.setItem("token", res.data.access);
+                localStorage.setItem("user", JSON.stringify(res.data.user));
                 sessionStorage.setItem("user", JSON.stringify(res.data.user));
-                setTimeout(() => navigate(res.data.user.isAdmin ? "/admin" : "/"), 1500);
+                const isStaff = Boolean(res.data?.user?.isAdmin || res.data?.user?.is_staff || res.data?.user?.is_superuser);
+                setTimeout(() => navigate(isStaff ? "/admin/dashboard" : "/"), 1500);
             } else {
                 setTimeout(() => navigate("/login"), 1500);
             }

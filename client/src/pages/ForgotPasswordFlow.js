@@ -75,6 +75,7 @@ function ForgotPasswordFlow() {
 
             // Store the token immediately so we can use it to reset the password or skip
             localStorage.setItem("token", res.data.access);
+            localStorage.setItem("user", JSON.stringify(res.data.user));
             sessionStorage.setItem("user", JSON.stringify(res.data.user));
 
             toast.success("OTP verified successfully!");
@@ -118,9 +119,10 @@ function ForgotPasswordFlow() {
             const res = await API.post("/api/password-reset/confirm/", { new_password: newPassword });
             toast.success("Password updated successfully! Welcome back.");
 
-            const user = JSON.parse(sessionStorage.getItem("user"));
+            const user = JSON.parse(sessionStorage.getItem("user") || "null");
+            const isStaff = Boolean(user?.isAdmin || user?.is_staff || user?.is_superuser);
             setTimeout(() => {
-                navigate(user.isAdmin ? "/admin/dashboard" : "/");
+                navigate(isStaff ? "/admin/dashboard" : "/");
             }, 1500);
 
         } catch (err) {
@@ -134,9 +136,10 @@ function ForgotPasswordFlow() {
 
     const handleSkip = () => {
         toast.success("Skipped password reset. Welcome back!");
-        const user = JSON.parse(sessionStorage.getItem("user"));
+        const user = JSON.parse(sessionStorage.getItem("user") || "null");
+        const isStaff = Boolean(user?.isAdmin || user?.is_staff || user?.is_superuser);
         setTimeout(() => {
-            navigate(user.isAdmin ? "/admin/dashboard" : "/");
+            navigate(isStaff ? "/admin/dashboard" : "/");
         }, 1200);
     };
 

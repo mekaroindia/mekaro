@@ -73,11 +73,13 @@ export default function CompleteProfile() {
 
             // Login Success
             localStorage.setItem("token", res.data.access);
+            localStorage.setItem("user", JSON.stringify(res.data.user));
             sessionStorage.setItem("user", JSON.stringify(res.data.user));
 
             toast.success("Profile completed! Logging in...");
+            const isStaff = Boolean(res.data?.user?.isAdmin || res.data?.user?.is_staff || res.data?.user?.is_superuser);
             setTimeout(() => {
-                window.location.href = "/";
+                navigate(isStaff ? "/admin/dashboard" : "/");
             }, 1500);
 
         } catch (err) {

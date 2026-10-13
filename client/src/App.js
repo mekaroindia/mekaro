@@ -78,6 +78,8 @@ function App() {
             <ToastContainer position="top-center" autoClose={1800} />
             <Routes>
               <Route path="/admin" element={<AdminLayout />}>
+                <Route index element={<Navigate to="/admin/dashboard" replace />} />
+                <Route path="overview" element={<Navigate to="/admin/dashboard" replace />} />
                 <Route path="dashboard" element={<AdminDashboard />} />
                 <Route path="orders" element={<AdminOrders />} />
                 <Route path="users" element={<AdminUsers />} />
@@ -90,6 +92,7 @@ function App() {
                 <Route path="workshops" element={<AdminWorkshops />} />
                 <Route path="priority-orders" element={<AdminPriorityOrders />} />
                 <Route path="project-orders" element={<AdminProjectOrders />} />
+                <Route path="*" element={<Navigate to="/admin/dashboard" replace />} />
               </Route>
               <Route path="/" element={<Home />} />
               <Route path="/projects" element={<Projects />} />

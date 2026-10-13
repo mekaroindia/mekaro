@@ -61,11 +61,13 @@ export default function Register() {
         }
 
         localStorage.setItem("token", res.data.access);
+        localStorage.setItem("user", JSON.stringify(res.data.user));
         sessionStorage.setItem("user", JSON.stringify(res.data.user));
 
         toast.success("Account created successfully!", { position: "top-center", autoClose: 1500 });
+        const isStaff = Boolean(res.data?.user?.isAdmin || res.data?.user?.is_staff || res.data?.user?.is_superuser);
         setTimeout(() => {
-          navigate(res.data.user.isAdmin ? "/admin" : "/");
+          navigate(isStaff ? "/admin/dashboard" : "/");
         }, 1500);
 
       } catch (err) {

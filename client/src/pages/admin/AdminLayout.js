@@ -10,6 +10,7 @@ export default function AdminLayout() {
   const logout = () => {
     localStorage.removeItem("token");
     localStorage.removeItem("user");
+    sessionStorage.removeItem("user");
     navigate("/login");
   };
 
@@ -17,9 +18,15 @@ export default function AdminLayout() {
     const token = localStorage.getItem("token");
     if (!token) {
       localStorage.removeItem("user");
+      sessionStorage.removeItem("user");
       navigate("/login");
+      return;
     }
-  }, [navigate]);
+
+    if (location.pathname === "/admin" || location.pathname === "/admin/") {
+      navigate("/admin/dashboard", { replace: true });
+    }
+  }, [location.pathname, navigate]);
 
   const menuItems = [
     { label: "Overview", path: "/admin/dashboard", icon: <FaChartBar /> },
@@ -45,7 +52,7 @@ export default function AdminLayout() {
     <div className="admin-container">
       {/* MOBILE HEADER */}
       <div className="mobile-header">
-        <div className="brand">
+        <div className="brand" onClick={() => navigate("/admin/dashboard")} style={{ cursor: "pointer" }}>
           <FaRocket className="brand-icon" />
           <span className="brand-text">MEKARO Admin</span>
         </div>
@@ -56,14 +63,15 @@ export default function AdminLayout() {
 
       {/* SIDEBAR */}
       <aside className={`admin-sidebar ${isMobileOpen ? "open" : ""}`}>
-        <div className="sidebar-brand brand">
+        <div className="sidebar-brand brand" onClick={() => navigate("/admin/dashboard")} style={{ cursor: "pointer" }}>
           <FaRocket className="brand-icon" />
           <span className="brand-text">MEKARO Admin</span>
         </div>
 
         <nav className="admin-nav">
           {menuItems.map((item) => {
-            const isActive = location.pathname === item.path;
+            const isActive = location.pathname === item.path ||
+              (item.path === "/admin/dashboard" && (location.pathname === "/admin" || location.pathname === "/admin/" || location.pathname === "/admin/overview"));
             return (
               <button
                 key={item.path}
